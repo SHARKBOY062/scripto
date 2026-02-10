@@ -1,0 +1,241 @@
+.hero{
+  position: relative;
+  padding-top: 44px;
+  padding-bottom: 26px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(123,30,58,.08);
+}
+
+/* layout limpo */
+.hero-grid{
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* badges (discretos) */
+.hero-badges{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.badge-tech{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(123,30,58,.12);
+  box-shadow: 0 10px 24px rgba(26,15,20,.06);
+  color: rgba(26,15,20,.72);
+  font-weight: 850;
+}
+
+/* tipografia premium */
+.hero-title{
+  margin: 0 0 10px;
+  font-size: 46px;
+  line-height: 1.04;
+  letter-spacing: -0.9px;
+  color: rgba(26,15,20,.96);
+  max-width: 18ch;
+}
+
+.hero-text{
+  margin: 0 0 18px;
+  color: rgba(26,15,20,.66);
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 60ch;
+}
+
+/* bullets minimalistas */
+.hero-points{
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 18px;
+}
+
+.point{
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: 12px;
+  align-items: start;
+
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(123,30,58,.10);
+  box-shadow: 0 14px 34px rgba(26,15,20,.06);
+}
+
+.dot{
+  width: 10px;
+  height: 10px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: rgba(123,30,58,.92);
+  box-shadow: 0 0 0 6px rgba(123,30,58,.05);
+}
+
+.point-title{
+  font-weight: 950;
+  letter-spacing: .2px;
+  color: rgba(26,15,20,.92);
+}
+
+.point-desc{
+  color: rgba(26,15,20,.62);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+/* CTA */
+.hero-cta{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn-arrow{
+  margin-left: 2px;
+  font-weight: 950;
+  opacity: .9;
+}
+
+.btn-ghost{
+  background: rgba(255,255,255,.92);
+}
+
+/* “confiança” sem poluir */
+.hero-trust{
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.10);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 14px 34px rgba(26,15,20,.05);
+}
+
+.trust-pill{
+  font-weight: 850;
+  font-size: 12.5px;
+  color: rgba(26,15,20,.70);
+}
+
+.trust-sep{
+  width: 1px;
+  height: 14px;
+  background: rgba(123,30,58,.14);
+}
+
+/* card lateral: glass muito leve, luxo discreto */
+.hero-card{
+  padding: 18px;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(123,30,58,.12);
+  border-radius: 18px;
+  box-shadow: 0 22px 60px rgba(26,15,20,.08);
+}
+
+/* brilho sutil do card (quase imperceptível) */
+.hero-card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+  opacity: .55;
+}
+
+.hero-card-top{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.pill-wine{
+  font-weight: 950;
+  color: rgba(123,30,58,.92);
+  background: rgba(123,30,58,.08);
+  border: 1px solid rgba(123,30,58,.16);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.mini{
+  color: rgba(26,15,20,.60);
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.hero-stats{
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat{
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(123,30,58,.10);
+  background: rgba(255,255,255,.92);
+}
+
+.stat-wide{
+  grid-column: 1 / -1;
+}
+
+.stat-k{
+  color: rgba(26,15,20,.60);
+  font-size: 12px;
+  font-weight: 850;
+  margin-bottom: 6px;
+}
+
+.stat-v{
+  font-size: 20px;
+  font-weight: 980;
+  letter-spacing: -.2px;
+  color: rgba(26,15,20,.94);
+}
+
+.stat-v.small{
+  font-size: 13.5px;
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.hero-note{
+  position: relative;
+  color: rgba(26,15,20,.62);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* responsivo */
+@media (max-width: 980px){
+  .hero-grid{ grid-template-columns: 1fr; }
+  .hero-title{ font-size: 38px; max-width: none; }
+}
+
+@media (max-width: 520px){
+  .hero-title{ font-size: 34px; }
+  .hero-trust{
+    flex-wrap: wrap;
+    border-radius: 18px;
+  }
+}

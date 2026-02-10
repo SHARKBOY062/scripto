@@ -1,0 +1,189 @@
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+
+  /* glass base */
+  background: rgba(251, 247, 248, 0.62);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+
+  /* borda fina vinho */
+  border-bottom: 1px solid rgba(123, 30, 58, 0.12);
+}
+
+.header::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* “sheen” sutil (brilho de vidro) */
+  background:
+    radial-gradient(1000px 300px at 20% -40%, rgba(163, 59, 90, 0.12), transparent 60%),
+    radial-gradient(900px 260px at 80% -35%, rgba(123, 30, 58, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.40), rgba(255,255,255,0.00));
+  opacity: 0.9;
+}
+
+.header-inner{
+  position: relative;
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  transition: background .16s var(--ease), transform .16s var(--ease);
+}
+
+.brand:hover{
+  background: rgba(255,255,255,0.55);
+  transform: translateY(-1px);
+}
+
+.brand-mark{
+  width: 14px;
+  height: 14px;
+  border-radius: 6px;
+
+  background: radial-gradient(circle at 30% 30%, rgba(163,59,90,.90), rgba(123,30,58,.95));
+  box-shadow:
+    0 10px 24px rgba(123,30,58,.18),
+    0 0 0 6px rgba(123,30,58,.06);
+}
+
+.brand-name{
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.brand-sub{
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(26,15,20,.58);
+  border-left: 1px solid rgba(123,30,58,.16);
+  padding-left: 10px;
+  margin-left: 2px;
+}
+
+.nav{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  /* “capsule glass” do lado direito */
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.12);
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 16px 40px rgba(26,15,20,.08),
+    inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+.nav-link{
+  color: rgba(26,15,20,.74);
+  text-decoration: none;
+  font-weight: 850;
+  font-size: 13.5px;
+
+  padding: 10px 12px;
+  border-radius: 999px;
+
+  transition:
+    background .14s var(--ease),
+    color .14s var(--ease),
+    transform .14s var(--ease);
+}
+
+.nav-link:hover{
+  background: rgba(123,30,58,.08);
+  color: rgba(26,15,20,.92);
+  transform: translateY(-1px);
+}
+
+/* Botões base (se você já tem no App.css, isso só refina o visual) */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(123,30,58,.16);
+  background: rgba(255,255,255,0.65);
+  color: rgba(26,15,20,.92);
+
+  font-weight: 900;
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  box-shadow:
+    0 12px 28px rgba(26,15,20,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
+
+  transition:
+    transform .14s var(--ease),
+    box-shadow .14s var(--ease),
+    background .14s var(--ease),
+    border-color .14s var(--ease);
+}
+
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(123,30,58,.28);
+  background: rgba(255,255,255,0.82);
+  box-shadow:
+    0 16px 34px rgba(26,15,20,.10),
+    inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.btn:active{
+  transform: translateY(0px);
+}
+
+/* CTA vinho sutil, sem ficar “gritante” */
+.btn-primary{
+  border-color: rgba(123,30,58,.26);
+  background:
+    radial-gradient(120px 60px at 30% 20%, rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(135deg, rgba(123,30,58,.16), rgba(163,59,90,.10));
+}
+
+.btn-primary:hover{
+  border-color: rgba(123,30,58,.40);
+}
+
+/* Responsivo */
+@media (max-width: 860px){
+  .brand-sub{ display: none; }
+}
+
+@media (max-width: 720px){
+  .nav-link{ display: none; }
+  .nav{
+    padding: 6px;
+    gap: 8px;
+  }
+}
