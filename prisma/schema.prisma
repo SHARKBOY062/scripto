@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Order {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  publicToken     String   @unique @map("public_token")
+
+  asset           String
+  wallet          String
+
+  brlGross        Decimal  @map("brl_gross")
+  feePct          Decimal  @map("fee_pct")
+  feeBrl          Decimal  @map("fee_brl")
+  brlNet          Decimal  @map("brl_net")
+
+  usdTourismRate  Decimal  @map("usd_tourism_rate")
+  receiveUsdt     Decimal? @map("receive_usdt")
+  receiveBtc      Decimal? @map("receive_btc")
+
+  status          String   @default("new")
+  txHash          String?  @map("tx_hash")
+  txNetwork       String?  @map("tx_network")
+
+  @@map("orders")
+}

@@ -1,0 +1,257 @@
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  position: sticky;
+  top: 0;
+
+  /* necessário pro ::before ficar preso no header */
+  position: sticky;
+  top: 0;
+}
+
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+
+  /* ancora do brilho */
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  position: sticky;
+
+  /* FIX real: precisa ser relative pro ::before */
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(251, 247, 248, 0.62);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  border-bottom: 1px solid rgba(123, 30, 58, 0.12);
+
+  /* FIX */
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(251, 247, 248, 0.62);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  border-bottom: 1px solid rgba(123, 30, 58, 0.12);
+
+  /* importante */
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  position: relative;
+}
+
+/* brilho “vidro” */
+.header::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1000px 300px at 20% -40%, rgba(163, 59, 90, 0.12), transparent 60%),
+    radial-gradient(900px 260px at 80% -35%, rgba(123, 30, 58, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.40), rgba(255,255,255,0.00));
+  opacity: 0.9;
+}
+
+.header-inner{
+  position: relative;
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  min-height: 72px;
+  padding: 14px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Logo à esquerda (sem textos) */
+.brand{
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 0;
+  flex: 0 0 auto;
+
+  padding: 6px 8px;
+  border-radius: 14px;
+  transition: background .16s var(--ease), transform .16s var(--ease);
+}
+
+.brand:hover{
+  background: rgba(255,255,255,0.55);
+  transform: translateY(-1px);
+}
+
+.brand-logo{
+  height: 80px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Nav à direita */
+.nav{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.12);
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 16px 40px rgba(26,15,20,.08),
+    inset 0 1px 0 rgba(255,255,255,.6);
+
+  /* anti-corte */
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.nav-link{
+  color: rgba(26,15,20,.74);
+  text-decoration: none;
+  font-weight: 850;
+  font-size: 13.5px;
+  white-space: nowrap;
+
+  padding: 10px 12px;
+  border-radius: 999px;
+
+  transition:
+    background .14s var(--ease),
+    color .14s var(--ease),
+    transform .14s var(--ease);
+}
+
+.nav-link:hover{
+  background: rgba(123,30,58,.08);
+  color: rgba(26,15,20,.92);
+  transform: translateY(-1px);
+}
+
+/* Botões */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(123,30,58,.16);
+  background: rgba(255,255,255,0.65);
+  color: rgba(26,15,20,.92);
+
+  font-weight: 900;
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+
+  box-shadow:
+    0 12px 28px rgba(26,15,20,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
+
+  transition:
+    transform .14s var(--ease),
+    box-shadow .14s var(--ease),
+    background .14s var(--ease),
+    border-color .14s var(--ease);
+}
+
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(123,30,58,.28);
+  background: rgba(255,255,255,0.82);
+  box-shadow:
+    0 16px 34px rgba(26,15,20,.10),
+    inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.btn:active{
+  transform: translateY(0px);
+}
+
+.btn-primary{
+  border-color: rgba(123,30,58,.26);
+  background:
+    radial-gradient(120px 60px at 30% 20%, rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(135deg, rgba(123,30,58,.16), rgba(163,59,90,.10));
+}
+
+.btn-primary:hover{
+  border-color: rgba(123,30,58,.40);
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 860px){
+  .header-inner{
+    width: calc(100% - 24px);
+    min-height: 64px;
+    padding: 12px 0;
+  }
+
+  .brand-logo{
+    height: 36px;
+    max-width: 150px;
+  }
+
+  .nav{
+    gap: 8px;
+    padding: 7px;
+  }
+
+  .nav-link{
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 720px){
+  /* mantém só o CTA no mobile para não virar “letra por letra” */
+  .nav-link{ display: none; }
+
+  .nav{
+    padding: 6px;
+    gap: 8px;
+  }
+
+  .btn{
+    height: 40px;
+    padding: 0 14px;
+  }
+}
+
+@media (max-width: 420px){
+  .brand{
+    padding: 4px 6px;
+  }
+
+  .brand-logo{
+    height: 32px;
+    max-width: 130px;
+  }
+}

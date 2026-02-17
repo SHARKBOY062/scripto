@@ -1,0 +1,248 @@
+.faq{
+  padding-top: 22px;
+}
+
+.faq-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.faq-brand{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.faq-logo{
+  height: 44px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 24px rgba(123,30,58,.10));
+}
+
+.faq-titles{
+  min-width: 0;
+}
+
+.faq-title{
+  margin: 0;
+  font-size: clamp(18px, 2.2vw, 22px);
+  letter-spacing: -0.2px;
+}
+
+.faq-sub{
+  margin: 6px 0 0;
+  color: rgba(26,15,20,.66);
+  font-weight: 650;
+  line-height: 1.55;
+  max-width: 64ch;
+}
+
+.faq-card{
+  position: relative;
+  padding: 10px;
+  background: rgba(255,255,255,.86);
+  overflow: hidden;
+}
+
+.faq-card::before{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 280px at 10% -20%, rgba(163,59,90,.10), transparent 55%),
+    radial-gradient(800px 260px at 90% 0%, rgba(123,30,58,.08), transparent 60%);
+  opacity: .9;
+}
+
+.faq-list{
+  position: relative;
+  display: grid;
+  gap: 10px;
+}
+
+.faq-item{
+  border: 1px solid rgba(123,30,58,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.78);
+  box-shadow:
+    0 10px 30px rgba(26,15,20,.06),
+    inset 0 1px 0 rgba(255,255,255,.65);
+  overflow: hidden;
+}
+
+.faq-q{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 14px 14px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+
+  transition: transform .14s var(--ease), background .14s var(--ease);
+}
+
+.faq-q:hover{
+  background: rgba(123,30,58,.04);
+}
+
+.faq-q:active{
+  transform: translateY(1px);
+}
+
+.faq-q-left{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.faq-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgba(163,59,90,.95), rgba(123,30,58,.92));
+  box-shadow:
+    0 10px 24px rgba(123,30,58,.16),
+    0 0 0 6px rgba(123,30,58,.06);
+  flex: 0 0 auto;
+}
+
+.faq-q-text{
+  font-weight: 900;
+  color: rgba(26,15,20,.92);
+  letter-spacing: 0.1px;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.faq-q-right{
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.14);
+  background: rgba(255,255,255,.72);
+  display: grid;
+  place-items: center;
+}
+
+.faq-plus{
+  width: 12px;
+  height: 12px;
+  position: relative;
+}
+
+.faq-plus::before,
+.faq-plus::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: rgba(123,30,58,.72);
+  border-radius: 2px;
+}
+
+.faq-plus::before{
+  width: 12px;
+  height: 2px;
+}
+
+.faq-plus::after{
+  width: 2px;
+  height: 12px;
+  transition: transform .16s var(--ease), opacity .16s var(--ease);
+}
+
+/* quando abre: vira "menos" */
+.faq-item.open .faq-plus::after{
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.faq-a{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .22s var(--ease);
+}
+
+.faq-a-inner{
+  padding: 0 14px 14px 34px;
+  color: rgba(26,15,20,.70);
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.faq-foot{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-top: 12px;
+  padding: 12px 10px;
+
+  border-top: 1px solid rgba(123,30,58,.10);
+}
+
+.faq-foot-left{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.faq-foot-pill{
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.12);
+  background: rgba(255,255,255,.70);
+  color: rgba(26,15,20,.70);
+  font-weight: 850;
+  font-size: 12.5px;
+}
+
+.faq-foot-cta{
+  text-decoration: none;
+  font-weight: 900;
+  color: rgba(123,30,58,.86);
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,58,.14);
+  background: rgba(255,255,255,.70);
+
+  transition: transform .14s var(--ease), background .14s var(--ease), border-color .14s var(--ease);
+}
+
+.faq-foot-cta:hover{
+  transform: translateY(-1px);
+  border-color: rgba(123,30,58,.26);
+  background: rgba(255,255,255,.86);
+}
+
+@media (max-width: 640px){
+  .faq-logo{ height: 38px; }
+  .faq-a-inner{ padding-left: 14px; }
+  .faq-foot{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .faq-foot-cta{
+    text-align: center;
+  }
+}

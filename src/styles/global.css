@@ -1,0 +1,183 @@
+:root{
+  --bg: #ffffff;
+  --surface: rgba(255,255,255,.78);
+  --card: rgba(255,255,255,.92);
+  --text: #1a0f14;
+  --muted: rgba(26,15,20,.66);
+  --line: rgba(123,30,58,.14);
+
+  --wine: #7b1e3a;
+  --wine2: #a33b5a;
+  --wine3: #d7a4b3;
+
+  --shadow: 0 16px 40px rgba(26,15,20,.10);
+  --radius: 18px;
+
+  --ease: cubic-bezier(.2,.9,.2,1);
+
+  color-scheme: light;
+}
+
+*{ box-sizing: border-box; }
+
+html, body, #root{
+  height: 100%;
+  background: #ffffff !important;
+}
+
+/* Evita “vazamento” horizontal de qualquer coisa */
+html, body{
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;           /* melhor que hidden (não cria scroll fantasma) */
+}
+@supports not (overflow: clip){
+  html, body{ overflow-x: hidden; }
+}
+
+/* iOS/scrollbar: não use 100vw em containers globais */
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color: var(--text);
+  background: #ffffff !important;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: geometricPrecision;
+}
+
+/* mata backgrounds decorativos “fantasmas” */
+body::before,
+body::after,
+html::before,
+html::after,
+#root::before,
+#root::after{
+  content: none !important;
+  display: none !important;
+}
+
+main{
+  display: block;
+  padding-bottom: 32px;
+  background: #ffffff !important;
+}
+
+/* ✅ Containers realmente responsivos */
+.section{
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 64px 0;
+}
+
+/* ✅ A regra mais importante para grids/flex não “cortarem” */
+.section *{
+  min-width: 0; /* grid items e flex items por padrão estouram sem isso */
+}
+
+/* Mídia nunca estoura */
+img, svg, video{
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Texto longo (wallet, hash, etc.) não corta */
+a, p, span, b, strong, code, pre, textarea, input{
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Inputs e selects: não estouram no iOS */
+input, select, textarea{
+  max-width: 100%;
+}
+
+/* Cards */
+.card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+
+  /* evita “cortes” por sombras grandes em telas pequenas */
+  max-width: 100%;
+}
+
+/* Botões */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.8);
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
+  text-decoration: none;
+  max-width: 100%;
+}
+
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(123,30,58,.28);
+  background: rgba(255,255,255,.95);
+}
+
+.btn-primary{
+  border-color: rgba(123,30,58,.25);
+  background: linear-gradient(135deg, rgba(123,30,58,.12), rgba(163,59,90,.10));
+}
+
+.btn-primary:hover{
+  border-color: rgba(123,30,58,.42);
+}
+
+/* badges */
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.65);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+  max-width: 100%;
+}
+
+hr.soft{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}
+
+/* ✅ Breakpoints */
+@media (max-width: 980px){
+  .section{ padding: 52px 0; }
+}
+
+@media (max-width: 640px){
+  .section{
+    width: calc(100% - 24px);
+    padding: 40px 0;
+  }
+
+  /* botões ficam “perfeitos” no mobile */
+  .btn{
+    width: 100%;
+  }
+}
+
+/* ✅ Se algum componente usar 100vw, essa classe resolve */
+.fullbleed{
+  width: 100%;
+  max-width: 100%;
+}
