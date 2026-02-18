@@ -1,7 +1,16 @@
+/* =========================================================
+   GLOBAL.CSS (Scripto)
+   - Margens responsivas consistentes
+   - Anti-overflow (mobile / iOS)
+   - Tipografia + cards + botões base
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
 :root{
   --bg: #ffffff;
   --surface: rgba(255,255,255,.78);
   --card: rgba(255,255,255,.92);
+
   --text: #1a0f14;
   --muted: rgba(26,15,20,.66);
   --line: rgba(123,30,58,.14);
@@ -15,37 +24,46 @@
 
   --ease: cubic-bezier(.2,.9,.2,1);
 
+  /* ✅ Uma única regra de “margem” global (resolve 90% dos cortes) */
+  --container-max: 1100px;
+  --container-pad: clamp(12px, 4vw, 22px);
+
+  /* espaçamentos verticais padrão */
+  --section-y: clamp(36px, 6vw, 64px);
+
   color-scheme: light;
 }
 
+/* ---------- Reset / Base ---------- */
 *{ box-sizing: border-box; }
 
 html, body, #root{
-  height: 100%;
-  background: #ffffff !important;
+  min-height: 100%;
+  background: var(--bg);
 }
 
-/* Evita “vazamento” horizontal de qualquer coisa */
+/* ✅ Anti “scroll fantasma” e estouro horizontal */
 html, body{
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;           /* melhor que hidden (não cria scroll fantasma) */
-}
-@supports not (overflow: clip){
-  html, body{ overflow-x: hidden; }
+  overflow-x: hidden; /* o mais compatível */
 }
 
-/* iOS/scrollbar: não use 100vw em containers globais */
+/* iOS safe-area: evita conteúdo “encostar” ou cortar nas bordas */
 body{
   margin: 0;
+  padding-left: max(0px, env(safe-area-inset-left));
+  padding-right: max(0px, env(safe-area-inset-right));
+
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
-  background: #ffffff !important;
+  background: var(--bg);
+
   -webkit-text-size-adjust: 100%;
   text-rendering: geometricPrecision;
 }
 
-/* mata backgrounds decorativos “fantasmas” */
+/* remove pseudo backgrounds globais (caso algum CSS antigo tenha) */
 body::before,
 body::after,
 html::before,
@@ -56,51 +74,70 @@ html::after,
   display: none !important;
 }
 
+/* ---------- Layout base ---------- */
 main{
   display: block;
+  background: var(--bg);
   padding-bottom: 32px;
-  background: #ffffff !important;
+  overflow-x: hidden; /* ✅ caso algum componente estoure, segura aqui também */
 }
 
-/* ✅ Containers realmente responsivos */
-.section{
-  width: min(1100px, calc(100% - 32px));
+/* ✅ Container ÚNICO (use em header/footer/sections) */
+.container{
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 64px 0;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
 }
 
-/* ✅ A regra mais importante para grids/flex não “cortarem” */
+/* ✅ Section consistente (sem calc/sem min()) */
+.section{
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+}
+
+/* ✅ A regra MAIS importante para grid/flex não estourar */
 .section *{
-  min-width: 0; /* grid items e flex items por padrão estouram sem isso */
+  min-width: 0;
 }
 
-/* Mídia nunca estoura */
-img, svg, video{
+/* ---------- Mídia segura ---------- */
+img, svg, video, canvas{
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Texto longo (wallet, hash, etc.) não corta */
+/* ---------- Texto longo (wallet/hash) sem cortar ---------- */
 a, p, span, b, strong, code, pre, textarea, input{
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-/* Inputs e selects: não estouram no iOS */
+/* Inputs/Selects no iOS não estouram */
 input, select, textarea{
   max-width: 100%;
 }
 
-/* Cards */
+/* ---------- Componentes base ---------- */
 .card{
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-
-  /* evita “cortes” por sombras grandes em telas pequenas */
   max-width: 100%;
+}
+
+hr.soft{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
 }
 
 /* Botões */
@@ -109,24 +146,33 @@ input, select, textarea{
   align-items: center;
   justify-content: center;
   gap: 10px;
+
   height: 44px;
   padding: 0 16px;
   border-radius: 999px;
+
   border: 1px solid var(--line);
   background: rgba(255,255,255,.8);
   color: var(--text);
+
   font-weight: 650;
   letter-spacing: .2px;
+
   cursor: pointer;
-  transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
   text-decoration: none;
+
   max-width: 100%;
+  transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
 }
 
 .btn:hover{
   transform: translateY(-1px);
   border-color: rgba(123,30,58,.28);
   background: rgba(255,255,255,.95);
+}
+
+.btn:active{
+  transform: translateY(0);
 }
 
 .btn-primary{
@@ -138,46 +184,62 @@ input, select, textarea{
   border-color: rgba(123,30,58,.42);
 }
 
+.btn-ghost{
+  background: rgba(255,255,255,.55);
+}
+
 /* badges */
 .badge{
   display: inline-flex;
   align-items: center;
   gap: 8px;
+
   padding: 7px 12px;
   border-radius: 999px;
+
   border: 1px solid var(--line);
   background: rgba(255,255,255,.65);
+
   color: var(--muted);
   font-size: 13px;
   font-weight: 650;
+
   max-width: 100%;
 }
 
-hr.soft{
-  border: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--line), transparent);
-}
+/* ---------- Utilitários anti-corte (use quando precisar) ---------- */
 
-/* ✅ Breakpoints */
-@media (max-width: 980px){
-  .section{ padding: 52px 0; }
-}
-
-@media (max-width: 640px){
-  .section{
-    width: calc(100% - 24px);
-    padding: 40px 0;
-  }
-
-  /* botões ficam “perfeitos” no mobile */
-  .btn{
-    width: 100%;
-  }
-}
-
-/* ✅ Se algum componente usar 100vw, essa classe resolve */
+/* ✅ Para qualquer “faixa”/background full width sem 100vw */
 .fullbleed{
   width: 100%;
   max-width: 100%;
+}
+
+/* ✅ se algum componente tiver sombras/pseudo muito agressivos */
+.overflow-safe{
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+/* ✅ Evita elemento absoluto sair da tela */
+.relative{
+  position: relative;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 980px){
+  :root{
+    --section-y: clamp(28px, 5vw, 54px);
+  }
+}
+
+@media (max-width: 640px){
+  :root{
+    --container-pad: clamp(12px, 5vw, 18px);
+  }
+
+  /* mobile: botão full */
+  .btn{
+    width: 100%;
+  }
 }

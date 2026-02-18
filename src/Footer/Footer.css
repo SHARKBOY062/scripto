@@ -1,7 +1,17 @@
+/* =========================
+   Footer (Scripto)
+   - glass leve + links
+   - logo igual header
+   - container global
+   ========================= */
+
 .footer{
   position: relative;
   border-top: 1px solid rgba(123, 30, 58, 0.10);
   background: rgba(255,255,255,0.82);
+
+  /* evita pseudo / sombras estourarem */
+  overflow: hidden;
 }
 
 .footer::before{
@@ -18,14 +28,21 @@
 
 .footer-inner{
   position: relative;
-  width: min(1100px, calc(100% - 32px));
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 28px 0;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+
+  padding-top: 26px;
+  padding-bottom: 18px;
 
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
+
+  min-width: 0;
 }
 
 .footer-left{
@@ -35,6 +52,7 @@
   min-width: 0;
 }
 
+/* logo clicável, igual header */
 .footer-brand{
   display: inline-flex;
   align-items: center;
@@ -43,6 +61,7 @@
 
   padding: 8px 10px;
   border-radius: 14px;
+
   transition: background .16s var(--ease), transform .16s var(--ease);
 }
 
@@ -52,7 +71,7 @@
 }
 
 .footer-logo{
-  height: 60px;
+  height: 44px;
   width: auto;
   max-width: 180px;
   object-fit: contain;
@@ -85,6 +104,7 @@
     inset 0 1px 0 rgba(255,255,255,.65);
 
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .footer-right a{
@@ -111,24 +131,27 @@
 
 .footer-bottom{
   position: relative;
-  width: min(1100px, calc(100% - 32px));
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
 
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 
-  padding: 14px 0 18px;
+  padding-top: 14px;
+  padding-bottom: 18px;
+
   color: rgba(26,15,20,.56);
   font-weight: 750;
   font-size: 12.5px;
   border-top: 1px solid rgba(123, 30, 58, 0.08);
 }
 
-.sep{
-  opacity: .55;
-}
+.sep{ opacity: .55; }
 
 /* Responsivo */
 @media (max-width: 860px){
@@ -143,14 +166,14 @@
   }
 
   .footer-logo{
-    height: 36px;
+    height: 38px;
     max-width: 160px;
   }
 }
 
 @media (max-width: 420px){
   .footer-logo{
-    height: 32px;
+    height: 34px;
     max-width: 140px;
   }
 
