@@ -52,7 +52,7 @@ export default function Converter() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
-  // Cotações “reais” (fetch público). Se falhar, fallback.
+  // Cotações (agora via /api/quotes)
   const [usdBrl, setUsdBrl] = useState(FALLBACK_USD_BRL);
   const [btcBrl, setBtcBrl] = useState(FALLBACK_BTC_BRL);
   const [quoteLoading, setQuoteLoading] = useState(false);
@@ -72,7 +72,7 @@ export default function Converter() {
   const [hashLoading, setHashLoading] = useState(false);
   const pollRef = useRef(null);
 
-  // Sempre tenta recuperar token salvo (para o botão Ver Hash funcionar mesmo após reload)
+  // Recupera token salvo (Ver Hash funciona após reload)
   useEffect(() => {
     const t = localStorage.getItem("scripto_last_token");
     if (t && !publicToken) setPublicToken(t);
@@ -82,10 +82,7 @@ export default function Converter() {
   const brlGross = useMemo(() => n(amount), [amount]);
   const walletOk = useMemo(() => wallet.trim().length >= 16, [wallet]);
 
-  const feePct = useMemo(
-    () => (asset === "BTC" ? FEE_BTC_PCT : FEE_USDT_PCT),
-    [asset]
-  );
+  const feePct = useMemo(() => (asset === "BTC" ? FEE_BTC_PCT : FEE_USDT_PCT), [asset]);
 
   const feeBrl = useMemo(() => (feePct / 100) * brlGross, [feePct, brlGross]);
   const brlNet = useMemo(() => Math.max(0, brlGross - feeBrl), [brlGross, feeBrl]);
@@ -102,47 +99,37 @@ export default function Converter() {
     if (!Number.isFinite(brlNet) || brlNet <= 0) return 0;
 
     if (asset === "USDT") {
-      // USDT: dólar turismo com spread
       return brlNet / usdTourismRate;
     }
 
-    // BTC: usa BTC/BRL real
     const btc = Number.isFinite(btcBrl) ? btcBrl : FALLBACK_BTC_BRL;
     return btc > 0 ? brlNet / btc : 0;
   }, [asset, brlNet, usdTourismRate, btcBrl]);
 
-  const selected = useMemo(
-    () => ASSETS.find((a) => a.code === asset) || ASSETS[0],
-    [asset]
-  );
-
-  // Buscar cotações (somente UI)
+  // Cotações via Vercel Function (/api/quotes)
   useEffect(() => {
     let alive = true;
+    const controller = new AbortController();
 
     const run = async () => {
       try {
         setQuoteLoading(true);
 
-        const [cg, ex] = await Promise.all([
-          fetch(
-            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=brl,usd",
-            { cache: "no-store" }
-          ).then((r) => r.json()),
-          fetch("https://api.exchangerate.host/latest?base=USD&symbols=BRL", {
-            cache: "no-store",
-          }).then((r) => r.json()),
-        ]);
+        const r = await fetch("/api/quotes", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
 
+        const j = await r.json().catch(() => null);
         if (!alive) return;
 
-        const btc = Number(cg?.bitcoin?.brl);
-        const usd = Number(ex?.rates?.BRL);
+        const usd = Number(j?.usdBrl);
+        const btc = Number(j?.btcBrl);
 
-        if (Number.isFinite(btc) && btc > 0) setBtcBrl(btc);
         if (Number.isFinite(usd) && usd > 0) setUsdBrl(usd);
+        if (Number.isFinite(btc) && btc > 0) setBtcBrl(btc);
       } catch {
-        // silêncio
+        // silêncio: mantém fallback
       } finally {
         if (alive) setQuoteLoading(false);
       }
@@ -150,9 +137,11 @@ export default function Converter() {
 
     run();
     const t = setInterval(run, 60_000);
+
     return () => {
       alive = false;
       clearInterval(t);
+      controller.abort();
     };
   }, []);
 
@@ -163,7 +152,7 @@ export default function Converter() {
     try {
       setLoading(true);
 
-      // NÃO muda lógica do seu backend/admin
+      // NÃO muda lógica do backend/admin
       const order = await createOrder({
         asset,
         wallet: wallet.trim(),
@@ -177,8 +166,14 @@ export default function Converter() {
         setPublicToken(token);
       }
 
-      // pix payload conforme seu backend retornar
-      const pix = order?.pixPayload || order?.pix || order?.pixCopyPaste || order?.pix_copia_cola || "";
+      // pix payload conforme backend retornar
+      const pix =
+        order?.pixPayload ||
+        order?.pix ||
+        order?.pixCopyPaste ||
+        order?.pix_copia_cola ||
+        "";
+
       setPixPayload(clampStr(pix));
       setPixOpen(true);
     } catch (e) {
@@ -211,7 +206,7 @@ export default function Converter() {
       setTxNetwork(net || "");
       setStatus(st || "");
     } catch {
-      // silêncio
+      // silêncio (pode ainda não ter hash no admin)
     } finally {
       setHashLoading(false);
     }
@@ -225,7 +220,6 @@ export default function Converter() {
       return;
     }
 
-    // sincroniza state
     if (!publicToken) setPublicToken(token);
 
     setHashOpen(true);
@@ -267,7 +261,7 @@ export default function Converter() {
         <h2 className="convLux__title">Conversão premium, rápida e objetiva</h2>
 
         <p className="convLux__sub">
-          Fluxo automático e direto. Informe valor e carteira, gere o PIX e acompanhe a hash quando confirmarmos.
+          Fluxo direto. Informe valor e carteira, gere o PIX e acompanhe a hash quando confirmarmos.
         </p>
 
         <div className="convLux__chips" aria-label="Destaques">
@@ -372,10 +366,7 @@ export default function Converter() {
                   placeholder={asset === "BTC" ? "bc1... / 1... (BTC)" : "0x... / TRC20 (USDT)"}
                   aria-label="Carteira de destino"
                 />
-                <span
-                  className={`validDot ${walletOk ? "ok" : wallet.length ? "bad" : ""}`}
-                  aria-hidden="true"
-                />
+                <span className={`validDot ${walletOk ? "ok" : wallet.length ? "bad" : ""}`} aria-hidden="true" />
               </div>
               <div className="helper">
                 Destino: <b className="mono">{walletOk ? shortAddr(wallet) : "—"}</b>
@@ -407,10 +398,7 @@ export default function Converter() {
               <div className="quoteRow strong">
                 <span>Você recebe</span>
                 <b className="mono">
-                  {receive.toLocaleString("pt-BR", {
-                    maximumFractionDigits: asset === "BTC" ? 8 : 2,
-                  })}{" "}
-                  {asset}
+                  {receive.toLocaleString("pt-BR", { maximumFractionDigits: asset === "BTC" ? 8 : 2 })} {asset}
                 </b>
               </div>
 
@@ -478,10 +466,7 @@ export default function Converter() {
             <div className="row">
               <span>Você recebe</span>
               <b className="mono">
-                {receive.toLocaleString("pt-BR", {
-                  maximumFractionDigits: asset === "BTC" ? 8 : 2,
-                })}{" "}
-                {asset}
+                {receive.toLocaleString("pt-BR", { maximumFractionDigits: asset === "BTC" ? 8 : 2 })} {asset}
               </b>
             </div>
 
@@ -510,7 +495,7 @@ export default function Converter() {
           <div className="modal card">
             <div className="modalTop">
               <div className="modalTitle">PIX para iniciar a conversão</div>
-              <button className="modalClose" onClick={() => setPixOpen(false)} aria-label="Fechar">
+              <button className="modalClose" onClick={() => setPixOpen(false)} aria-label="Fechar" type="button">
                 ×
               </button>
             </div>
@@ -576,7 +561,7 @@ export default function Converter() {
           <div className="modal card">
             <div className="modalTop">
               <div className="modalTitle">Hash da transação</div>
-              <button className="modalClose" onClick={closeHashModal} aria-label="Fechar">
+              <button className="modalClose" onClick={closeHashModal} aria-label="Fechar" type="button">
                 ×
               </button>
             </div>
@@ -585,9 +570,7 @@ export default function Converter() {
               <div className="hashGrid">
                 <div className="hashItem">
                   <div className="k">Status</div>
-                  <div className="v">
-                    {status || (hashLoading ? "atualizando..." : "aguardando confirmação")}
-                  </div>
+                  <div className="v">{status || (hashLoading ? "atualizando..." : "aguardando confirmação")}</div>
                 </div>
 
                 <div className="hashItem">
@@ -597,9 +580,7 @@ export default function Converter() {
 
                 <div className="hashItem hashItemWide">
                   <div className="k">Hash</div>
-                  <div className="v mono hashValue">
-                    {txHash || (hashLoading ? "consultando..." : "ainda não informada")}
-                  </div>
+                  <div className="v mono hashValue">{txHash || (hashLoading ? "consultando..." : "ainda não informada")}</div>
                 </div>
               </div>
 
